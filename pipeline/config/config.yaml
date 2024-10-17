@@ -1,0 +1,6 @@
+data_dir: "data"
+data_file: "creditcard.csv"
+target_name: "Class"
+
+
+
