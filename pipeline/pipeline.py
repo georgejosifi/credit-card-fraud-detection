@@ -1,7 +1,7 @@
 import dacite, yaml
 from common.dataclasses import PipelineConfig, LoadedData
 from pathlib import Path
-from common.util import load_data
+from common.util import load_data, create_pipeline
 
 
 
@@ -13,7 +13,11 @@ def main():
     
     loaded_data = load_data(pipeline_config)
 
-    print(loaded_data.train_values)
+    
+    pipeline = create_pipeline(pipeline_config)
+
+    print(pipeline)
+
 
 
     
