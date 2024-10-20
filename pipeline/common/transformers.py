@@ -13,6 +13,8 @@ from sklearn.random_projection import GaussianRandomProjection
 
 import category_encoders as ce
 
+from custom_transformers.remove_columns_transformer import ZeroTransformer
+
 
 
 class ImputationAlgorithm(str, Enum):
@@ -46,6 +48,7 @@ class PreprocessingAlgorithm(str, Enum):
     HelmertEncoder = "HelmertEncoder"
     JamesSteinEncoder = "JamesSteinEncoder"
     CatBoostEncoder = "CatBoostEncoder"
+    ZeroTransformer = "ZeroTransformer"
 
 
 preprocessing_algorithms = {
@@ -65,7 +68,8 @@ preprocessing_algorithms = {
     PreprocessingAlgorithm.GLMMEncoder: ce.GLMMEncoder,
     PreprocessingAlgorithm.HelmertEncoder: ce.HelmertEncoder,
     PreprocessingAlgorithm.JamesSteinEncoder: ce.JamesSteinEncoder,
-    PreprocessingAlgorithm.CatBoostEncoder: ce.CatBoostEncoder
+    PreprocessingAlgorithm.CatBoostEncoder: ce.CatBoostEncoder,
+    PreprocessingAlgorithm.ZeroTransformer: ZeroTransformer
 }
 
 
