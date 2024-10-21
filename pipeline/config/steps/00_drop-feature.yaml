@@ -1,5 +1,0 @@
-name: drop-irrelevant-features
-features:
-  - V3
-transformer_type: Preprocessing
-transformer_algorithm: ZeroTransformer

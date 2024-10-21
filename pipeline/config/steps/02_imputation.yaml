@@ -1,9 +1,0 @@
-name: time_imputation
-features:
-  - Time
-transformer_type: Imputation
-transformer_algorithm: SimpleImputer
-algorithm_parameters:
-  missing_values: 12
-  strategy: mean
-

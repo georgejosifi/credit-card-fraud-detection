@@ -10,9 +10,10 @@ from sklearn.compose import ColumnTransformer
 PIPELINE_DIR = Path(__file__).parent.parent
 
 def load_data(pipeline_Config: PipelineConfig) -> LoadedData:
-    train_values_file = PIPELINE_DIR / pipeline_Config.data_dir/ pipeline_Config.data_file
-    train_values_data = pd.read_csv(train_values_file)
-    loaded_data = LoadedData(train_values=train_values_data)
+    data_file = PIPELINE_DIR / pipeline_Config.data_dir/ pipeline_Config.data_file
+    data = pd.read_csv(data_file)
+    loaded_data = LoadedData(train_values= data.drop([pipeline_Config.target_name], axis = 1), 
+                             target_values= data[pipeline_Config.target_name])
 
     return loaded_data
 
@@ -48,7 +49,7 @@ def create_pipeline(pipeline_Config: PipelineConfig) -> Pipeline:
     
     classifier = get_classification_algorithm(classifier_config.classification_algorithm,classifier_config.algorithm_parameters)
 
-    pipeline = Pipeline(steps= [('preprocessing',column_transformer), ('classification',classifier)])
+    pipeline = Pipeline(steps= [('preprocessing',column_transformer), ('classification',classifier)], verbose= True)
     return pipeline
 
 

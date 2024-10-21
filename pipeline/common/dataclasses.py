@@ -13,6 +13,7 @@ class PipelineConfig:
 @dataclass
 class LoadedData:
     train_values: pd.DataFrame
+    target_values: pd.DataFrame
 
 @dataclass
 class TransformerConfig:
