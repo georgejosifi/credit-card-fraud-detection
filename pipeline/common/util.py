@@ -5,7 +5,7 @@ from common.transformers import get_transformer_algorithm
 from common.classifiers import get_classification_algorithm
 import pandas as pd
 from sklearn.pipeline import Pipeline
-from sklearn.compose import ColumnTransformer
+from sklearn.compose import ColumnTransformer, make_column_selector
 
 PIPELINE_DIR = Path(__file__).parent.parent
 
@@ -41,8 +41,11 @@ def create_pipeline(pipeline_Config: PipelineConfig) -> Pipeline:
     transformers = []
     for transformer_conf in transformer_configs:
 
-        transformer = get_transformer_algorithm(transformer_conf.transformer_type, transformer_conf.transformer_algorithm, transformer_conf.algorithm_parameters)
-        transformers.append((transformer_conf.name, transformer, transformer_conf.features))
+        transformer = get_transformer_algorithm(transformer_conf.transformer_type,
+                                                 transformer_conf.transformer_algorithm, 
+                                                 transformer_conf.algorithm_parameters)
+        column_regex = '|'.join(transformer_conf.features)
+        transformers.append((transformer_conf.name, transformer, make_column_selector(pattern=column_regex)))
     
     column_transformer  = ColumnTransformer(transformers= transformers, verbose_feature_names_out= False, remainder = 'passthrough')
     column_transformer.set_output(transform= 'pandas')
