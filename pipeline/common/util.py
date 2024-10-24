@@ -38,21 +38,24 @@ def create_pipeline(pipeline_Config: PipelineConfig) -> Pipeline:
             transformer_configs.append(config)
             print(f"Loaded step {i+1}: {config.step_name}") 
 
-    transformers = []
+    column_transformers_list = []
     for transformer_conf in transformer_configs:
 
         transformer = get_transformer_algorithm(transformer_conf.transformer_type,
                                                  transformer_conf.transformer_algorithm, 
                                                  transformer_conf.algorithm_parameters)
         column_regex = '|'.join(transformer_conf.features)
-        transformers.append((transformer_conf.name, transformer, make_column_selector(pattern=column_regex)))
-    
-    column_transformer  = ColumnTransformer(transformers= transformers, verbose_feature_names_out= False, remainder = 'passthrough')
-    column_transformer.set_output(transform= 'pandas')
+        
+        column_transformer = ColumnTransformer(transformers = [(transformer_conf.name, transformer, make_column_selector(pattern=column_regex))],
+                                               verbose_feature_names_out= False,
+                                                 remainder = 'passthrough')
+        column_transformer.set_output(transform='pandas')
+        column_transformers_list.append((transformer_conf.step_name, column_transformer))
+
     
     classifier = get_classification_algorithm(classifier_config.classification_algorithm,classifier_config.algorithm_parameters)
 
-    pipeline = Pipeline(steps= [('preprocessing',column_transformer), ('classification',classifier)], verbose= True)
+    pipeline = Pipeline(steps= [*column_transformers_list, ('classification',classifier)], verbose= True)
     return pipeline
 
 
