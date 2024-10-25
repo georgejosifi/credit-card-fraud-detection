@@ -1,0 +1,7 @@
+name: normalizing
+features:
+  - Amount
+  - Time
+  - V
+transformer_type: Preprocessing
+transformer_algorithm: StandardScaler

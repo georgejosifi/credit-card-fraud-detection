@@ -1,0 +1,3 @@
+classification_algorithm: LogisticRegression
+algorithm_parameters:
+    n_jobs: -1

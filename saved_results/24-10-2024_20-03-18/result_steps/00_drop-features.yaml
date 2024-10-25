@@ -1,0 +1,19 @@
+name: drop_irrelevant_features
+features:
+  - Time
+  - Amount
+  - V2
+  - V5
+  - V6
+  - V8
+  - V19
+  - V15
+  - V13
+  - V4
+  - V3
+  - V9
+  - V7
+  - V8 
+
+transformer_type: Preprocessing
+transformer_algorithm: ZeroTransformer

@@ -1,0 +1,4 @@
+classification_algorithm: LogisticRegression
+algorithm_parameters:
+    solver: saga
+    n_jobs: -1
