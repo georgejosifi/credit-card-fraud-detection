@@ -6,7 +6,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier, RadiusNeighborsClassifier
 from sklearn.linear_model import PassiveAggressiveClassifier, LogisticRegression, SGDClassifier, RidgeClassifier, Perceptron
 from sklearn.svm import LinearSVC, NuSVC, SVC
-from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import GaussianNB, ComplementNB
 # from xgboost import XGBClassifier
 import mord
 
@@ -28,6 +28,7 @@ class ClassificationAlgorithm(str, Enum):
     SGDClassifier = "SGDClassifier"
     Perceptron = "Perceptron"
     GaussianNB = "GaussianNB"
+    ComplementNB = "ComplementNB"
     # XGBoostClassifier = "XGBoostClassifier"
     LogisticAT = "LogisticAT"
     LogisticIT = "LogisticIT"
@@ -50,6 +51,7 @@ classifiers = {
     ClassificationAlgorithm.SGDClassifier: SGDClassifier,
     ClassificationAlgorithm.Perceptron: Perceptron,
     ClassificationAlgorithm.GaussianNB: GaussianNB,
+    ClassificationAlgorithm.ComplementNB: ComplementNB,
     # ClassificationAlgorithm.XGBoostClassifier: XGBClassifier
     ClassificationAlgorithm.LogisticAT: mord.LogisticAT,
     ClassificationAlgorithm.LogisticIT: mord.LogisticIT,

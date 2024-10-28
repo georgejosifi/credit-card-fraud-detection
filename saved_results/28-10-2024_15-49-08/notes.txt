@@ -1,0 +1,1 @@
+With GaussianNB we see the highest recall score out of all classifers i tried before but a very low F1 score
