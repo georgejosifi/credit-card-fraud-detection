@@ -1,8 +1,11 @@
+validate: True
+
 data_dir: "data"
 data_file: "creditcard.csv"
 target_name: "Class"
 
 steps_dir: "config/steps"
+hyperparameter_tuning_dir: config/hyperparameter-tuning.yaml
 
 
 

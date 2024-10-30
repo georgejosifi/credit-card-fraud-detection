@@ -2,8 +2,9 @@ import dacite, yaml
 import shutil
 from common.dataclasses import PipelineConfig, LoadedData
 from pathlib import Path
-from common.util import load_data, create_pipeline
-from sklearn.model_selection import StratifiedKFold
+from common.util import load_data, create_pipeline, get_hyperparameter_tuning_algorithm_and_params
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.metrics import accuracy_score, f1_score, recall_score
 import numpy as np
 from datetime import datetime
@@ -11,9 +12,29 @@ from datetime import datetime
 SAVED_RESULTS_DIR = Path('saved_results/')
 PIPELINE_DIR = Path(__file__).parent
 
+def tune_hyperparameters(pipeline: Pipeline, data: LoadedData, pipelineConfig: PipelineConfig):
+    hyperparameter_tuning_algo, hyperparameter_tuning_params = get_hyperparameter_tuning_algorithm_and_params(pipelineConfig)
+    clf = hyperparameter_tuning_algo(estimator = pipeline, **hyperparameter_tuning_params)
+
+    X_train, X_test, y_train, y_test = train_test_split(data.train_values,data.target_values, train_size= 0.8)
+
+    clf.fit(X_train,y_train)
+
+    y_pred = clf.predict(X_test)
+
+    recall = recall_score(y_true= y_test, y_pred = y_pred)
+    f1 = f1_score(y_true = y_test, y_pred = y_pred)
+
+    print(f'These are the best parameters {clf.best_params_}')
+    print(f'The best score: {clf.best_score_}')
+    print(f'Unbiased recall score on test set: {recall}')
+    print(f'Unbiased f1 score on test set: {f1}')
+
+    print(clf.cv_results_)
+    
 
 
-def validate(pipeline, data: LoadedData):
+def validate(pipeline: Pipeline, data: LoadedData):
     skf =  StratifiedKFold(n_splits=5, shuffle= True)
     recall_scores = []
     f1_scores = []
@@ -62,16 +83,19 @@ def main():
 
     
     pipeline = create_pipeline(pipeline_config)
+    if pipeline_config.validate:
+        result_scores = validate(pipeline,loaded_data)
 
-    result_scores = validate(pipeline,loaded_data)
-
-    config_dir = SAVED_RESULTS_DIR/datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
-    config_dir.mkdir(parents= True)
-    score_file = config_dir/ 'scores.yaml'
-    with score_file.open('w') as f:
-        yaml.dump(result_scores,f)
+        config_dir = SAVED_RESULTS_DIR/datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+        config_dir.mkdir(parents= True)
+        score_file = config_dir/ 'scores.yaml'
+        with score_file.open('w') as f:
+            yaml.dump(result_scores,f)
+        
+        shutil.copytree(PIPELINE_DIR/ pipeline_config.steps_dir, config_dir/'result_steps')
     
-    shutil.copytree(PIPELINE_DIR/ pipeline_config.steps_dir, config_dir/'result_steps')
+    else:
+        tune_hyperparameters(pipeline,loaded_data,pipeline_config)
 
 
 

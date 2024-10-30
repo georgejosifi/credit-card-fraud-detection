@@ -4,10 +4,12 @@ from typing import Any, List
 
 @dataclass
 class PipelineConfig:
+    validate: bool
     data_dir: str
     data_file: str
     target_name: str
     steps_dir: str
+    hyperparameter_tuning_dir: str
 
 
 @dataclass
@@ -29,6 +31,11 @@ class TransformerConfig:
 class ClassifierConfig:
     classification_algorithm: str
     algorithm_parameters: dict[str,Any] = field(default_factory= dict)
+
+@dataclass
+class HyperparameterTuningConfig:
+    algorithm_name: str
+    algorithm_parameters: dict[str,Any]
 
 
 

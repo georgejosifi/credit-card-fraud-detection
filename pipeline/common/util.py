@@ -1,13 +1,16 @@
 from pathlib import Path
 import yaml, dacite
-from common.dataclasses import PipelineConfig, LoadedData, ClassifierConfig, TransformerConfig
+from common.dataclasses import PipelineConfig, LoadedData, ClassifierConfig, TransformerConfig, HyperparameterTuningConfig
 from common.transformers import get_transformer_algorithm
 from common.classifiers import get_classification_algorithm
+from common.hyperparameter import get_hyperparameter_tuning_algorithm
 import pandas as pd
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer, make_column_selector
+from scipy.stats import randint
 
 PIPELINE_DIR = Path(__file__).parent.parent
+
 
 def load_data(pipeline_Config: PipelineConfig) -> LoadedData:
     data_file = PIPELINE_DIR / pipeline_Config.data_dir/ pipeline_Config.data_file
@@ -16,6 +19,19 @@ def load_data(pipeline_Config: PipelineConfig) -> LoadedData:
                              target_values= data[pipeline_Config.target_name])
 
     return loaded_data
+
+
+def get_hyperparameter_tuning_algorithm_and_params(pipeline_Config: PipelineConfig):
+    hyperparameter_tuning_config_file = PIPELINE_DIR/ pipeline_Config.hyperparameter_tuning_dir
+    with hyperparameter_tuning_config_file.open('r') as f:
+        hyperparameter_tuning_config: HyperparameterTuningConfig = dacite.from_dict(data_class= HyperparameterTuningConfig, 
+                                                                                    data= yaml.load(f, yaml.FullLoader))
+    hyperparameter_tuning_algo =  get_hyperparameter_tuning_algorithm(hyperparameter_tuning_config.algorithm_name)
+
+    algorithm_param = _replace_interval_pattern(hyperparameter_tuning_config.algorithm_parameters)
+
+    return (hyperparameter_tuning_algo, algorithm_param)
+
 
 
 def create_pipeline(pipeline_Config: PipelineConfig) -> Pipeline:
@@ -61,7 +77,20 @@ def create_pipeline(pipeline_Config: PipelineConfig) -> Pipeline:
 
 
 
-    
+def _replace_interval_pattern(hyperparam: dict):
+    for key, value in hyperparam.items():
+        if isinstance(value,dict):
+            _replace_interval_pattern(value)
+
+        if isinstance(value,str):
+            if '-' in value:
+                interval_endpoints = value.split('-')
+                if len(interval_endpoints)>2:
+                    hyperparam[key] = [item for item in range(int(interval_endpoints[0]),int(interval_endpoints[1]),int(interval_endpoints[2]))]
+                else:
+                    hyperparam[key] = [item for item in range(int(interval_endpoints[0]),int(interval_endpoints[1]))]
+
+    return hyperparam
 
 
         
