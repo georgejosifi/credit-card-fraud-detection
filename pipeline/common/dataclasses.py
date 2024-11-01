@@ -5,11 +5,13 @@ from typing import Any, List
 @dataclass
 class PipelineConfig:
     validate: bool
+    imbalanced_learn: bool
     data_dir: str
     data_file: str
     target_name: str
     steps_dir: str
-    hyperparameter_tuning_dir: str
+    hyperparameter_tuning_config_dir: str
+    imbalanced_learning_config_dir: str
 
 
 @dataclass
@@ -36,6 +38,13 @@ class ClassifierConfig:
 class HyperparameterTuningConfig:
     algorithm_name: str
     algorithm_parameters: dict[str,Any]
+
+@dataclass
+class ImbalancedLearnConfig:
+    sampler_name: str
+    algorithm_name: str
+    algorithm_parameters: dict[str,Any] = field(default_factory= dict)
+
 
 
 

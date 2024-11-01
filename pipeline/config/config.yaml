@@ -1,11 +1,14 @@
 validate: True
+imbalanced_learn: True
 
 data_dir: "data"
 data_file: "creditcard.csv"
 target_name: "Class"
 
 steps_dir: "config/steps"
-hyperparameter_tuning_dir: config/hyperparameter-tuning.yaml
+hyperparameter_tuning_config_dir: config/hyperparameter-tuning.yaml
+imbalanced_learning_config_dir: config/imbalanced_learning.yaml
+
 
 
 

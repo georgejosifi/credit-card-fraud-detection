@@ -2,7 +2,7 @@ import dacite, yaml
 import shutil
 from common.dataclasses import PipelineConfig, LoadedData
 from pathlib import Path
-from common.util import load_data, create_pipeline, get_hyperparameter_tuning_algorithm_and_params
+from common.util import load_data, create_pipeline, get_hyperparameter_tuning_algorithm_and_params, get_imbalanced_learn_algorithm
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.metrics import accuracy_score, f1_score, recall_score
@@ -34,7 +34,7 @@ def tune_hyperparameters(pipeline: Pipeline, data: LoadedData, pipelineConfig: P
     
 
 
-def validate(pipeline: Pipeline, data: LoadedData):
+def validate(pipeline: Pipeline, data: LoadedData, pipeline_config: PipelineConfig):
     skf =  StratifiedKFold(n_splits=5, shuffle= True)
     recall_scores = []
     f1_scores = []
@@ -46,9 +46,20 @@ def validate(pipeline: Pipeline, data: LoadedData):
         X_train, X_test = data.train_values.loc[train_indices], data.train_values.loc[test_indices]
         y_train, y_test = data.target_values.loc[train_indices], data.target_values.loc[test_indices]
 
-        pipeline.fit(X_train,y_train)
+        if pipeline_config.imbalanced_learn:
+            print('Doing imbalanced sampling')
+            sampling_algorithm = get_imbalanced_learn_algorithm(pipeline_config)
+            classification_step = pipeline.steps.pop(-1)
+            X_train = pipeline.fit_transform(X_train)
+            X_train, y_train = sampling_algorithm.fit_resample(X_train, y_train)
+            classification_step[1].fit(X_train, y_train)
+            pipeline.steps.append(classification_step)
+        else:
+            pipeline.fit(X_train,y_train)
 
+        
         y_pred = pipeline.predict(X_test)
+
         recall = recall_score(y_true= y_test, y_pred= y_pred)
         f1 = f1_score(y_true=y_test, y_pred= y_pred)
         recall_scores.append(recall)
@@ -84,7 +95,7 @@ def main():
     
     pipeline = create_pipeline(pipeline_config)
     if pipeline_config.validate:
-        result_scores = validate(pipeline,loaded_data)
+        result_scores = validate(pipeline, loaded_data, pipeline_config)
 
         config_dir = SAVED_RESULTS_DIR/datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
         config_dir.mkdir(parents= True)
