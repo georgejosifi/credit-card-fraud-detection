@@ -1,0 +1,4 @@
+classification_algorithm: LogisticRegression
+algorithm_parameters:
+    solver: newton-cholesky
+    n_jobs: -1

@@ -1,0 +1,7 @@
+classification_algorithm: RandomForestClassifier
+algorithm_parameters:
+  class_weight:
+    0: 1
+    1: 5
+  n_jobs: -1
+

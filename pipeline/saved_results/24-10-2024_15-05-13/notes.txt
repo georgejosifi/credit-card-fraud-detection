@@ -1,0 +1,2 @@
+now that i added also normalized the feature 'Time' the scores of recall and f1 got a dramatical boost. Did the unnormalized values
+of Time made K neighbors classification prioritize it and therefore resulting in worse predictions?

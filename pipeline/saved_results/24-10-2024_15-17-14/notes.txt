@@ -1,0 +1,1 @@
+yes the unnormalized values of Time made the prediction scores much worse. By removing Time we see no difference in prediction scores

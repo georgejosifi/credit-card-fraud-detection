@@ -1,0 +1,3 @@
+classification_algorithm: RandomForestClassifier
+algorithm_parameters:
+    n_jobs: -1

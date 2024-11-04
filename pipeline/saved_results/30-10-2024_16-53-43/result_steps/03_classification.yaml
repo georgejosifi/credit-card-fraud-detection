@@ -1,0 +1,6 @@
+classification_algorithm: RandomForestClassifier
+algorithm_parameters:
+  n_estimators: 214
+  min_samples_split: 6
+  min_samples_leaf: 2
+  max_depth: 36

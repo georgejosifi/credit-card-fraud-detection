@@ -1,0 +1,6 @@
+{'classification__n_estimators': 100, 'classification__min_samples_split': 10, 'classification__min_samples_leaf': 1, 'classification__max_depth': 10, 'classification__criterion': 'log_loss'}
+
+best first hyperparameter tunin result
+
+
+{'classification__n_estimators': 25, 'classification__min_samples_split': 6, 'classification__min_samples_leaf': 2, 'classification__criterion': 'gini'}

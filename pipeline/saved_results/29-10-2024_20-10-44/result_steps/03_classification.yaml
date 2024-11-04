@@ -1,0 +1,6 @@
+classification_algorithm: KNeighborsClassifier
+algorithm_parameters:
+    n_neighbors: 3
+    p: 1
+    weights: distance
+    n_jobs: -1

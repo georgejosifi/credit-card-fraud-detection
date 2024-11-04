@@ -1,0 +1,1 @@
+over 0.8 results for recall and f1 score with smote float 0.005 and kneighbors 15

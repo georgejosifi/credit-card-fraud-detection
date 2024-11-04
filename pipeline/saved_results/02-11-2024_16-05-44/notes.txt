@@ -1,0 +1,1 @@
+Adasyn failed to give better results than SMOTE algorithm

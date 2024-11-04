@@ -1,0 +1,4 @@
+classification_algorithm: KNeighborsClassifier
+algorithm_parameters:
+  n_jobs: -1
+

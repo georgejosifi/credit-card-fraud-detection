@@ -1,0 +1,1 @@
+dropping Amount still keeps prediction scores the same. Amount is also not relevant 
