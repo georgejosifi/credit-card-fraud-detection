@@ -7,8 +7,11 @@ class PipelineConfig:
     validate: bool
     imbalanced_learn: bool
     data_dir: str
+    results_dir: str
     data_file: str
+    test_file: str
     target_name: str
+    output_file: str
     steps_dir: str
     hyperparameter_tuning_config_dir: str
     imbalanced_learning_config_dir: str
@@ -18,6 +21,7 @@ class PipelineConfig:
 class LoadedData:
     train_values: pd.DataFrame
     target_values: pd.DataFrame
+    test_values: pd.DataFrame
 
 @dataclass
 class TransformerConfig:

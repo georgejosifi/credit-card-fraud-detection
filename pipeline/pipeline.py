@@ -1,5 +1,6 @@
 import dacite, yaml
 import shutil
+import pandas as pd
 from common.dataclasses import PipelineConfig, LoadedData
 from pathlib import Path
 from common.util import load_data, create_pipeline, get_hyperparameter_tuning_algorithm_and_params, get_imbalanced_learn_algorithm
@@ -82,6 +83,19 @@ def validate(pipeline: Pipeline, data: LoadedData, pipeline_config: PipelineConf
      }
 
 
+def predict(pipeline: Pipeline, pipeline_config: PipelineConfig, data: LoadedData):
+    pipeline.fit(X=data.train_values,y=data.target_values)
+    predictions = pipeline.predict(X=data.test_values)
+    predictions= pd.Series(data=predictions)
+    
+    output_file = Path(pipeline_config.results_dir)/ pipeline_config.output_file
+    pd.Series.to_csv(predictions, output_file, index= False)
+
+
+
+
+
+
 
     
 
@@ -97,7 +111,7 @@ def main():
     if pipeline_config.validate:
         result_scores = validate(pipeline, loaded_data, pipeline_config)
 
-        config_dir = SAVED_RESULTS_DIR/datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+        config_dir = PIPELINE_DIR/SAVED_RESULTS_DIR/datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
         config_dir.mkdir(parents= True)
         score_file = config_dir/ 'scores.yaml'
         with score_file.open('w') as f:
@@ -106,7 +120,7 @@ def main():
         shutil.copytree(PIPELINE_DIR/ pipeline_config.steps_dir, config_dir/'result_steps')
     
     else:
-        tune_hyperparameters(pipeline,loaded_data,pipeline_config)
+        predict(pipeline,pipeline_config, loaded_data)
 
 
 

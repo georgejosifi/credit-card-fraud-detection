@@ -16,9 +16,11 @@ PIPELINE_DIR = Path(__file__).parent.parent
 
 def load_data(pipeline_Config: PipelineConfig) -> LoadedData:
     data_file = PIPELINE_DIR / pipeline_Config.data_dir/ pipeline_Config.data_file
+    test_values_file = PIPELINE_DIR/ pipeline_Config.data_dir/ pipeline_Config.test_file
     data = pd.read_csv(data_file)
+    test_values = pd.read_csv(test_values_file)
     loaded_data = LoadedData(train_values= data.drop([pipeline_Config.target_name], axis = 1), 
-                             target_values= data[pipeline_Config.target_name])
+                             target_values= data[pipeline_Config.target_name], test_values= test_values)
 
     return loaded_data
 

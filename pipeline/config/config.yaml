@@ -1,9 +1,12 @@
 validate: True
-imbalanced_learn: True
+imbalanced_learn: False
 
 data_dir: "data"
+results_dir: "results"
 data_file: "creditcard.csv"
+test_file: "test_values.csv"
 target_name: "Class"
+output_file: "predictions.csv"
 
 steps_dir: "config/steps"
 hyperparameter_tuning_config_dir: config/hyperparameter-tuning.yaml
