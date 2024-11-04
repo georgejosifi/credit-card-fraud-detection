@@ -1,5 +1,6 @@
 validate: True
 imbalanced_learn: False
+tune_hyperparameter: False
 
 data_dir: "data"
 results_dir: "results"

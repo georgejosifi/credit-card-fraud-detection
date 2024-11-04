@@ -1,4 +1,13 @@
 sampler_name: OversamplingAlgorithm
-algorithm_name: RandomOverSampler
+algorithm_name: BorderlineSMOTE
 algorithm_parameters:
-  sampling_strategy: 0.11
+  sampling_strategy: 0.01
+  
+
+  
+
+
+
+
+
+

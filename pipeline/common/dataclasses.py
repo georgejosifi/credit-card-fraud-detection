@@ -6,6 +6,7 @@ from typing import Any, List
 class PipelineConfig:
     validate: bool
     imbalanced_learn: bool
+    tune_hyperparameters: bool
     data_dir: str
     results_dir: str
     data_file: str

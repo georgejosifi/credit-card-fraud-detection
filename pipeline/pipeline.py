@@ -83,7 +83,7 @@ def validate(pipeline: Pipeline, data: LoadedData, pipeline_config: PipelineConf
      }
 
 
-def predict(pipeline: Pipeline, pipeline_config: PipelineConfig, data: LoadedData):
+def predict(pipeline: Pipeline, data: LoadedData, pipeline_config: PipelineConfig):
     pipeline.fit(X=data.train_values,y=data.target_values)
     predictions = pipeline.predict(X=data.test_values)
     predictions= pd.Series(data=predictions)
@@ -119,8 +119,11 @@ def main():
         
         shutil.copytree(PIPELINE_DIR/ pipeline_config.steps_dir, config_dir/'result_steps')
     
+    elif pipeline_config.tune_hyperparameters:
+        tune_hyperparameters(pipeline,loaded_data,pipeline_config)
+
     else:
-        predict(pipeline,pipeline_config, loaded_data)
+        predict(pipeline, loaded_data, pipeline_config)
 
 
 
