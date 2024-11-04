@@ -1,5 +1,0 @@
-name: normalizing
-features:
-  - Amount
-transformer_type: Preprocessing
-transformer_algorithm: StandardScaler

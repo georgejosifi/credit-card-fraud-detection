@@ -1,2 +1,0 @@
-no significant difference when I normalize all V features. The only difference i notice is smaller standard deviation of
-recall and F1 score.

@@ -1,9 +1,0 @@
-name: drop_irrelevant_features
-features:
-  - V17
-  - V14
-  - V12
-  - V10
-
-transformer_type: Preprocessing
-transformer_algorithm: ZeroTransformer

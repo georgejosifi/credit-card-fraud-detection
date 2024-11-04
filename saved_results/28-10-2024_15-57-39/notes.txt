@@ -1,1 +1,0 @@
-dropping more features doesn't increase the F1 score substantially

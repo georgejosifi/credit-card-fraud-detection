@@ -1,4 +1,0 @@
-classification_algorithm: LogisticRegression
-algorithm_parameters:
-    solver: liblinear
-    n_jobs: -1

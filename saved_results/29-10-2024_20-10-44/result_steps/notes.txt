@@ -1,1 +1,0 @@
-also decent parameters from hyperparameter tuning

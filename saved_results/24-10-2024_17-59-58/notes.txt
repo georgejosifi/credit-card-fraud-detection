@@ -1,1 +1,0 @@
-we see a significant drop in prediction scores when removing features with high mutual info score

@@ -1,1 +1,0 @@
-Very high training speed, very high recall score but very low F1 score

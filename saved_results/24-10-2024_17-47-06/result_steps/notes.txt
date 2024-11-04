@@ -1,1 +1,0 @@
-again no difference in score when removing features with low mutual info score with the target variable

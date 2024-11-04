@@ -1,1 +1,0 @@
-Logistic regression sucks. K neighbors is way better

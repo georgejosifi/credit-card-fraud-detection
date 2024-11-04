@@ -1,6 +1,0 @@
-classification_algorithm: RandomForestClassifier
-algorithm_parameters:
-  n_estimators: 25
-  min_samples_split: 6
-  min_samples_leaf: 2
-  criterion: gini
